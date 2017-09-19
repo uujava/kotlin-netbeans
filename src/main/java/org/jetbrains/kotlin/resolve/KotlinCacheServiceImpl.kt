@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.resolve.diagnostics.KotlinSuppressCache
 import org.jetbrains.kotlin.container.ComponentProvider
+import org.jetbrains.kotlin.container.tryGetService
 import org.netbeans.api.project.Project as NBProject
 
 class KotlinCacheServiceImpl(private val ideaProject: Project, val project: NBProject) : KotlinCacheService {
@@ -77,6 +78,10 @@ class KotlinSimpleResolutionFacade(
     }
 
     override fun <T : Any> getIdeService(serviceClass: Class<T>): T {
+        throw UnsupportedOperationException()
+    }
+
+    override fun <T : Any> tryGetFrontendService(element: PsiElement, serviceClass: Class<T>): T? {
         throw UnsupportedOperationException()
     }
 }

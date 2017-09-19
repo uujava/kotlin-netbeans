@@ -34,9 +34,8 @@ class NetBeansJavaClassifierType(handle: TypeMirrorHandle<*>, project: Project) 
 
     override val presentableText 
         get() = handle.getName(project)
-    override val canonicalText 
+    override val classifierQualifiedName: String
         get() = handle.getName(project)
-
     override val isRaw: Boolean
         get() = if (handle.kind == TypeKind.DECLARED) handle.isRaw(project) else false
 

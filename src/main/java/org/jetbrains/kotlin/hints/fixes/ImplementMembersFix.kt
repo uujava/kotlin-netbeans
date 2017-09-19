@@ -68,7 +68,6 @@ class ImplementMembersFix(kotlinError: KotlinError,
     }
 
     private val OVERRIDE_RENDERER = DescriptorRenderer.withOptions {
-        renderDefaultValues = false
         modifiers = setOf(DescriptorRendererModifier.OVERRIDE)
         withDefinedIn = false
         classifierNamePolicy = ClassifierNamePolicy.SHORT

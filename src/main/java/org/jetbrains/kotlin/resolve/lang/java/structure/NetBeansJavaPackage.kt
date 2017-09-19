@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.jetbrains.kotlin.resolve.lang.java.structure
 
+import org.jetbrains.kotlin.load.java.structure.JavaAnnotation
 import java.util.Collections
 import javax.lang.model.element.PackageElement
 import org.jetbrains.kotlin.load.java.structure.JavaElement
@@ -45,4 +46,16 @@ class NetBeansJavaPackage(private val packages: List<ElemHandle<PackageElement>>
     override fun getClasses(nameFilter: (Name) -> Boolean) =
             packages.getClasses(project, nameFilter)
 
+    override val annotations: Collection<JavaAnnotation>
+        get() = packages.first().getAnnotations(project)
+    override val isDeprecatedInJavaDoc: Boolean
+        get() = findAnnotation(DEPRECATED) != null
+
+    override fun findAnnotation(fqName: FqName): JavaAnnotation? {
+        return annotations.first { it.resolve()?.fqName == fqName }
+    }
+
+    companion object {
+        val DEPRECATED = FqName(java.lang.Deprecated::class.qualifiedName!!)
+    }
 }

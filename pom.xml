@@ -9,10 +9,12 @@
   <properties> 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
     <netbeans.version>RELEASE82</netbeans.version>  
-    <kotlin.version>1.1.1</kotlin.version> 
-  </properties>  
+    <kotlin.version>1.1.4-3</kotlin.version>
+    <kotlin.ide.version>1.1.4.3</kotlin.ide.version>
+  </properties>
   <name>Kotlin</name>  
-  <description url="http://kotlinlang.org/">Kotlin language support</description>  
+  <description>Kotlin language support</description>
+  <url>http://kotlinlang.org/</url>
   <organization> 
     <name>JetBrains</name>  
     <url>http://www.jetbrains.com/</url> 
@@ -44,7 +46,7 @@
               <file>${project.basedir}/lib/kotlin-ide-common.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>kotlin-ide-common</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -59,7 +61,7 @@
               <file>${project.basedir}/lib/openapi-formatter.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>openapi-formatter</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -74,7 +76,7 @@
               <file>${project.basedir}/lib/kotlin-formatter.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>kotlin-formatter</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -89,7 +91,7 @@
               <file>${project.basedir}/lib/idea-formatter.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>idea-formatter</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -104,7 +106,7 @@
               <file>${project.basedir}/lib/intellij-core.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>intellij-core</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -119,7 +121,7 @@
               <file>${project.basedir}/lib/kotlin-converter.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
               <artifactId>kotlin-converter</artifactId>  
-              <version>1.0</version>  
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
@@ -133,13 +135,43 @@
             <configuration> 
               <file>${project.basedir}/lib/asm-all.jar</file>  
               <groupId>org.jetbrains.kotlin</groupId>  
-              <artifactId>asm</artifactId>  
-              <version>1.0</version>  
+              <artifactId>asm</artifactId>
+              <version>${kotlin.ide.version}</version>
               <packaging>jar</packaging>  
               <generatePom>true</generatePom> 
             </configuration> 
           </execution>  
-        </executions> 
+          <execution>
+            <id>inst8</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <configuration>
+              <file>${project.basedir}/lib/util.jar</file>
+              <groupId>org.jetbrains.kotlin</groupId>
+              <artifactId>util</artifactId>
+              <version>${kotlin.ide.version}</version>
+              <packaging>jar</packaging>
+              <generatePom>true</generatePom>
+            </configuration>
+          </execution>
+          <execution>
+            <id>inst9</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <configuration>
+              <file>${project.basedir}/lib/kotlin-analysis.jar</file>
+              <groupId>org.jetbrains.kotlin</groupId>
+              <artifactId>kotlin-analysis</artifactId>
+              <version>${kotlin.ide.version}</version>
+              <packaging>jar</packaging>
+              <generatePom>true</generatePom>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>  
       <plugin> 
         <groupId>org.jetbrains.kotlin</groupId>  
@@ -224,53 +256,63 @@
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>kotlin-ide-common</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>  
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>openapi-formatter</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>  
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>kotlin-formatter</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>  
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>idea-formatter</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>  
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>intellij-core</artifactId>  
-      <version>1.0</version>  
-      <type>jar</type> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.jetbrains.kotlin</groupId>  
-      <artifactId>kotlin-converter</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-converter</artifactId>
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>
     <dependency> 
       <groupId>org.jetbrains.kotlin</groupId>  
       <artifactId>asm</artifactId>  
-      <version>1.0</version>  
+      <version>${kotlin.ide.version}</version>
       <type>jar</type> 
     </dependency>
-    
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>util</artifactId>
+      <version>${kotlin.ide.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-analysis</artifactId>
+      <version>${kotlin.ide.version}</version>
+      <type>jar</type>
+    </dependency>
     <dependency>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-compiler</artifactId>
         <version>${kotlin.version}</version>
         <type>jar</type>
     </dependency>
-                
     <dependency> 
       <groupId>org.netbeans.modules</groupId>  
       <artifactId>org-netbeans-modules-maven</artifactId>  

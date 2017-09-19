@@ -30,5 +30,5 @@ import org.jetbrains.kotlin.resolve.constants.ConstantValue
 class NetBeansJavaPropertyInitializerEvaluator : JavaPropertyInitializerEvaluator {
 
     override fun getInitializerConstant(field: JavaField, descriptor: PropertyDescriptor): ConstantValue<*>? = null
-    override fun isNotNullCompileTimeConstant(field: JavaField): Boolean = false
+
 }

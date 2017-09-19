@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaField
 import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.netbeans.api.project.Project
 import org.jetbrains.kotlin.resolve.lang.java.*
 import javax.lang.model.element.TypeElement
@@ -47,7 +48,7 @@ class NetBeansJavaClass(elementHandle: ElemHandle<TypeElement>, project: Project
     override val supertypes: Collection<JavaClassifierType>
         get() = elementHandle.getSuperTypes(project)
 
-    override val innerClasses: Collection<JavaClass>
+    val innerClasses: Collection<JavaClass>
         get() = elementHandle.getInnerClasses(project)
 
     override val outerClass: JavaClass?
@@ -92,5 +93,11 @@ class NetBeansJavaClass(elementHandle: ElemHandle<TypeElement>, project: Project
         
         return "$visibility$final$cl ${elementHandle.qualifiedName}"
     }
-    
+
+    override val innerClassNames: Collection<Name>
+        get() = innerClasses.map { it.name }
+
+    override fun findInnerClass(name: Name): JavaClass? {
+        return innerClasses.find { it.name == name }
+    }
 }

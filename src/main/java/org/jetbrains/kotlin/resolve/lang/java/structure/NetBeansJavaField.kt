@@ -39,5 +39,10 @@ class NetBeansJavaField(elementHandle: ElemHandle<VariableElement>, containingCl
         get() = elementHandle.getFieldType(project)
 
     override fun presentation() = "$type $name"
-    
+    // TODO implement constants with initializer
+    override val hasConstantNotNullInitializer: Boolean
+        get() = false
+    override val initializerValue: Any?
+
+        get() = null
 }

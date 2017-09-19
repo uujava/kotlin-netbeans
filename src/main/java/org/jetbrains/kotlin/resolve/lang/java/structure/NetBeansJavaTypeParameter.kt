@@ -49,8 +49,8 @@ class NetBeansJavaTypeParameter(elementHandle: ElemHandle<TypeParameterElement>,
     override fun equals(other: Any?): Boolean {
         if (other !is NetBeansJavaTypeParameter) return false
 
-        val bound = upperBounds.firstOrNull()?.canonicalText ?: ""
-        val otherBound = other.upperBounds.firstOrNull()?.canonicalText ?: ""
+        val bound = upperBounds.firstOrNull()?.classifierQualifiedName ?: ""
+        val otherBound = other.upperBounds.firstOrNull()?.classifierQualifiedName ?: ""
 
         val fullName = "$name $bound"
         val otherFullName = "${other.name} $otherBound"
@@ -58,8 +58,9 @@ class NetBeansJavaTypeParameter(elementHandle: ElemHandle<TypeParameterElement>,
         return fullName == otherFullName
     }
 
+
     override fun hashCode(): Int {
-        val bound = upperBounds.firstOrNull()?.canonicalText ?: ""
+        val bound = upperBounds.firstOrNull()?.classifierQualifiedName ?: ""
 
         return "$name $bound".hashCode()
     }

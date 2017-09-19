@@ -2,6 +2,6 @@ package j2k
 
 class SimpleClass {
     fun hello() {
-        System.out.println("hello")
+        println("hello")
     }
 }

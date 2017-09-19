@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.types.ErrorUtils
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.idea.util.IdeDescriptorRenderers
+import org.jetbrains.kotlin.types.isError
 
 class SpecifyTypeIntention(doc: Document,
                            analysisResult: AnalysisResult?,

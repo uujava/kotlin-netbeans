@@ -3,8 +3,7 @@ package formatting
 class Cls {
     /*
      */
-    fun test() {
-    }
+    fun test() {}
 
     /*
      */

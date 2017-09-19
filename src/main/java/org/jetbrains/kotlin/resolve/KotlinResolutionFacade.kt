@@ -58,4 +58,5 @@ class KotlinResolutionFacade(private val kotlinProject: NBProject,
 
     override fun <T : Any> getIdeService(serviceClass: Class<T>): T = throw UnsupportedOperationException()
 
+    override fun <T : Any> tryGetFrontendService(element: PsiElement, serviceClass: Class<T>): T? =  throw UnsupportedOperationException()
 }

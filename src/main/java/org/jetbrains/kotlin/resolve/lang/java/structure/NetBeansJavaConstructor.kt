@@ -34,7 +34,7 @@ class NetBeansJavaConstructor(elementHandle: ElemHandle<ExecutableElement>, cont
         NetBeansJavaMember<ExecutableElement>(elementHandle, containingClass, project), JavaConstructor {
 
     override val valueParameters: List<JavaValueParameter>
-        get() = elementHandle.getValueParameters(project)
+        get() = elementHandle.getConstructorValueParameters(project)
 
     override val typeParameters: List<JavaTypeParameter>
         get() = elementHandle.getTypeParameters(project)

@@ -28,6 +28,7 @@ import org.netbeans.api.java.source.ElementHandle
 import org.netbeans.api.java.source.Task
 import org.netbeans.api.java.source.TypeMirrorHandle
 import org.netbeans.api.project.Project
+import javax.lang.model.type.TypeKind
 
 class ReturnTypeSearcher(val handle: ElemHandle<ExecutableElement>,
                          val project: Project) : Task<CompilationController> {
@@ -92,7 +93,38 @@ class ValueParametersSearcher(val handle: ElemHandle<ExecutableElement>,
         }
     }
 }
-  
+
+class ConstructorValueParametersSearcher(val handle: ElemHandle<ExecutableElement>,
+                              val project: Project) : Task<CompilationController> {
+
+    val valueParameters = arrayListOf<JavaValueParameter>()
+
+    override fun run(info: CompilationController) {
+        info.toResolvedPhase()
+
+        val elem = handle.resolve(info) ?: return
+        val valueParams = (elem as ExecutableElement).parameters
+        val parameterTypesCount = valueParams.size
+
+        valueParams.forEachIndexed { index, it ->
+            val isLastParameter = index == parameterTypesCount - 1
+            val parameterName = it.simpleName.toString()
+            val elemHandle = ElemHandle.create(it, project)
+            val valueParameter = if(isLastParameter) {
+                if(it.asType().kind == TypeKind.ERROR && it.asType().toString() == "<any>") {
+                    //skip kotlin.jvm.internal.DefaultConstructorMarker
+                    null
+                }else {
+                    NetBeansJavaValueParameter(elemHandle, project, parameterName, elem.isVarArgs)
+                }
+            }else {
+                 NetBeansJavaValueParameter(elemHandle, project, parameterName,false)
+            }
+            valueParameter?.let {  valueParameters.add(it)}
+        }
+    }
+}
+
 class ElementHandleValueParametersSearcher(val handle: ElementHandle<ExecutableElement>,
                               val project: Project) : Task<CompilationController> {
     

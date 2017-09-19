@@ -28,6 +28,8 @@ class KotlinNullableNotNullManager(private val javaProject: Project) : NullableN
         setNullables("Nullable")
     }
 
+    override fun getPredefinedNotNulls() = emptyList<String>()
+
     override fun hasHardcodedContracts(element: PsiElement) = false
     
     override fun isNotNull(owner: PsiModifierListOwner, checkBases: Boolean): Boolean {

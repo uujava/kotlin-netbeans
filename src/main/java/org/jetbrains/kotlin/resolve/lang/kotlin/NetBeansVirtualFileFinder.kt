@@ -25,29 +25,25 @@ import org.jetbrains.kotlin.builtins.BuiltInSerializerProtocol
 import org.jetbrains.kotlin.cli.jvm.index.JavaRoot
 import org.jetbrains.kotlin.model.KotlinEnvironment
 import org.jetbrains.kotlin.projectsextensions.KotlinProjectHelper.getFullClassPath
-import org.jetbrains.kotlin.load.kotlin.JvmVirtualFileFinder
-import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClassFinder
-import org.jetbrains.kotlin.load.kotlin.JvmVirtualFileFinderFactory
 import org.jetbrains.kotlin.name.ClassId
 import org.netbeans.api.project.Project
 import org.jetbrains.kotlin.load.java.structure.JavaClass
-import org.jetbrains.kotlin.load.kotlin.KotlinBinaryClassCache
-import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinaryClass
 import org.jetbrains.kotlin.log.KotlinLogger
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.serialization.deserialization.MetadataPackageFragment
 import org.jetbrains.kotlin.resolve.lang.java.computeClassId
 import org.jetbrains.kotlin.cli.jvm.index.JvmDependenciesIndex
+import org.jetbrains.kotlin.load.kotlin.*
 import org.jetbrains.kotlin.resolve.lang.java.structure.NetBeansJavaClass
 import org.openide.filesystems.FileObject
 import org.openide.filesystems.FileStateInvalidException
 
 class NetBeansVirtualFileFinder(private val project: Project,
-                                private val scope: GlobalSearchScope) : VirtualFileKotlinClassFinder() {
+                                private val scope: GlobalSearchScope) : VirtualFileFinder() {
 
     val index: JvmDependenciesIndex
-        get() = KotlinEnvironment.getEnvironment(project).index
+        get() = KotlinEnvironment.getEnvironment(project).rootsIndex
 
     private fun isClassFileName(name: String?): Boolean {
         if (name == null) return false
@@ -91,7 +87,7 @@ class NetBeansVirtualFileFinder(private val project: Project,
                 val splittedPath = path.split("!/")
                 if (splittedPath.size < 2) return null
 
-                return KotlinEnvironment.Companion.getEnvironment(project).getVirtualFileInJar(pathToJar, splittedPath[1])
+                return KotlinEnvironment.getEnvironment(project).getVirtualFileInJar(pathToJar, splittedPath[1])
             } catch (ex: FileStateInvalidException) {
                 KotlinLogger.INSTANCE.logException("Can't get file in jar", ex)
                 return null
@@ -99,7 +95,7 @@ class NetBeansVirtualFileFinder(private val project: Project,
         }
 
         if (isClassFileName(path)) {
-            return KotlinEnvironment.Companion.getEnvironment(project).getVirtualFile(path)
+            return KotlinEnvironment.getEnvironment(project).getVirtualFile(path)
         } else throw IllegalArgumentException("Virtual file not found for $path")
     }
 
@@ -145,7 +141,7 @@ class NetBeansVirtualFileFinder(private val project: Project,
     override fun hasMetadataPackage(fqName: FqName): Boolean {
         var found = false
 
-        val index = KotlinEnvironment.getEnvironment(project).index
+        val index = KotlinEnvironment.getEnvironment(project).rootsIndex
 
         index.traverseDirectoriesInPackage(fqName, continueSearch = { dir, _ ->
             found = found or dir.children.any { it.extension == MetadataPackageFragment.METADATA_FILE_EXTENSION }
@@ -164,6 +160,6 @@ class NetBeansVirtualFileFinder(private val project: Project,
 
 }
 
-class NetBeansVirtualFileFinderFactory(private val project: Project) : JvmVirtualFileFinderFactory {
-    override fun create(scope: GlobalSearchScope): JvmVirtualFileFinder = NetBeansVirtualFileFinder(project, scope)
+class NetBeansVirtualFileFinderFactory(private val project: Project) : VirtualFileFinderFactory {
+    override fun create(scope: GlobalSearchScope): VirtualFileFinder = NetBeansVirtualFileFinder(project, scope)
 }

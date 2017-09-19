@@ -34,8 +34,8 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.platform.JvmBuiltIns
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.jvm.JavaDescriptorResolver
-import org.jetbrains.kotlin.resolve.jvm.TopDownAnalyzerFacadeForJVM
-import org.jetbrains.kotlin.resolve.jvm.TopDownAnalyzerFacadeForJVM.SourceOrBinaryModuleClassResolver
+import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
+import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM.SourceOrBinaryModuleClassResolver
 import org.jetbrains.kotlin.resolve.jvm.extensions.PackageFragmentProviderExtension
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import org.jetbrains.kotlin.resolve.lazy.KotlinCodeAnalyzer
@@ -91,7 +91,6 @@ object NetBeansAnalyzerFacadeForJVM {
                     providerFactory, 
                     dependencyScope, 
                     LookupTracker.DO_NOTHING,
-                    KotlinPackagePartProvider(kotlinProject), 
                     languageVersionSettings,
                     moduleClassResolver,
                     kotlinProject)
@@ -112,12 +111,11 @@ object NetBeansAnalyzerFacadeForJVM {
                 trace, 
                 providerFactory, 
                 sourceScope, 
-                LookupTracker.DO_NOTHING, 
-                KotlinPackagePartProvider(kotlinProject), 
+                LookupTracker.DO_NOTHING,
                 languageVersionSettings, 
                 moduleClassResolver, 
                 kotlinProject).apply {
-            initJvmBuiltInsForTopDownAnalysis(module, languageVersionSettings)
+            initJvmBuiltInsForTopDownAnalysis()
         }
         
         moduleClassResolver.sourceCodeResolver = container.get()

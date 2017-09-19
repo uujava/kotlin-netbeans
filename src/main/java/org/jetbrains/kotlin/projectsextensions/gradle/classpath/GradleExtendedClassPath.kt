@@ -35,6 +35,7 @@ class GradleExtendedClassPath(val project: Project) : ClassPathExtender {
     
     private fun getClassPath(type: String): ClassPath {
         try {
+
             val method = classPathProvider?.javaClass?.getMethod("getClassPaths", String::class.java) ?: return ClassPath.EMPTY
             
             return method.invoke(classPathProvider, type) as ClassPath

@@ -32,5 +32,8 @@ fun ElemHandle<ExecutableElement>.getTypeParameters(project: Project) =
 fun ElemHandle<ExecutableElement>.getValueParameters(project: Project) =
         ValueParametersSearcher(this, project).execute(project).valueParameters
 
+fun ElemHandle<ExecutableElement>.getConstructorValueParameters(project: Project) =
+        ConstructorValueParametersSearcher(this, project).execute(project).valueParameters
+
 fun ElementHandle<ExecutableElement>.getElementHandleValueParameters(project: Project) =
         ElementHandleValueParametersSearcher(this, project).execute(project).valueParameters

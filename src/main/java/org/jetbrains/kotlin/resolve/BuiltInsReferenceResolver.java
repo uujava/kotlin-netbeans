@@ -48,7 +48,7 @@ import org.jetbrains.kotlin.resolve.lazy.ResolveSession;
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory;
 import org.jetbrains.kotlin.resolve.scopes.DescriptorKindFilter;
 import org.jetbrains.kotlin.resolve.scopes.MemberScope;
-import org.jetbrains.kotlin.serialization.deserialization.FindClassInModuleKt;
+import org.jetbrains.kotlin.descriptors.FindClassInModuleKt;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -103,14 +103,9 @@ public class BuiltInsReferenceResolver {
                 DefaultBuiltIns.getInstance(),
                 null);
         newModuleContext.setDependencies(newModuleContext.getModule());
-        
-        FileBasedDeclarationProviderFactory declarationFactory = new FileBasedDeclarationProviderFactory(
-                newModuleContext.getStorageManager(), ktBuiltInsFiles);
-        
+
         ResolveSession resolveSession = InjectionKt.createLazyResolveSession(
-                newModuleContext, declarationFactory,
-                new BindingTraceContext(), TargetPlatform.Default.INSTANCE, 
-                LanguageVersionSettingsImpl.DEFAULT);
+                newModuleContext, ktBuiltInsFiles);
         
         newModuleContext.initializeModuleContents(resolveSession.getPackageFragmentProvider());
         
@@ -251,7 +246,7 @@ public class BuiltInsReferenceResolver {
         
         if (originalDescriptor instanceof ClassDescriptor) {
             return FindClassInModuleKt.findClassAcrossModuleDependencies(
-                    moduleDescriptor, 
+                    moduleDescriptor,
                     DescriptorUtilsKt.getClassId((ClassDescriptor) originalDescriptor));
         }
         
