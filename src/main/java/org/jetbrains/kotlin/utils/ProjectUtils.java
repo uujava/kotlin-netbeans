@@ -77,7 +77,7 @@ public class ProjectUtils {
             } else {
                 FileObject kotlincDir = dir.getFileObject("kotlinc");
                 FileObject build = kotlincDir.getFileObject("build.txt");
-                if (build == null || !build.asText().equals(BundledCompiler.KOTLIN_VERSION)) {
+                if (build == null || !build.asText("UTF-8").equals(BundledCompiler.KOTLIN_VERSION)) {
                     BundledCompiler.getKotlinc();
                     KotlinLogger.INSTANCE.logInfo("New version of bundled compiler");
                 }

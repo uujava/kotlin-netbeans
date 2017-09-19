@@ -16,6 +16,7 @@
  *******************************************************************************/
 package intentions
 
+import com.intellij.openapi.vfs.CharsetToolkit
 import utils.*
 import org.openide.filesystems.FileObject
 import org.jetbrains.kotlin.builder.KotlinPsiManager
@@ -42,7 +43,7 @@ class IntentionsTest : KotlinTestCase("Intentions test", "intentions") {
         assertEquals(applicable, applicableIntention.isApplicable(caret))
 
         applicableIntention.implement()
-        assertTrue(doc.getText(0, doc.length) equalsWithoutSpaces dir.getFileObject("$fileName.after").asText())
+        assertTrue(doc.getText(0, doc.length) equalsWithoutSpaces dir.getFileObject("$fileName.after").asText("UTF-8"))
     }
 
     fun testRemoveEmptyClassBody() = doTest("removeEmptyClassBody", RemoveEmptyClassBodyIntention::class.java)

@@ -40,7 +40,7 @@ class QuickFixesTest : KotlinTestCase("Quick Fixes test", "quickfixes") {
         assertTrue(quickFix.isApplicable())
         
         quickFix.implement()
-        assertTrue(doc.getText(0, doc.length) equalsWithoutSpaces dir.getFileObject("$fileName.after").asText())
+        assertTrue(doc.getText(0, doc.length) equalsWithoutSpaces dir.getFileObject("$fileName.after").asText("UTF-8"))
     }
     
     fun testRemoveUnnecessarySafeCall() = doTest("removeUnnecessaryCall", RemoveUnnecessarySafeCallFix::class.java)

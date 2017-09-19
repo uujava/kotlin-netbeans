@@ -72,7 +72,8 @@ public class MavenProjectOpenedHook extends ProjectOpenedHook{
                         
                         if (pomXml != null) {
                             pomXml.addFileChangeListener(pomListener);
-                            getProjectWatcher().addPropertyChangeListener(pomListener);
+                            NbMavenProject mavenProject = getProjectWatcher();
+                            mavenProject.addPropertyChangeListener(pomListener);
                         }
                         
                         KotlinProjectHelper.INSTANCE.doInitialScan(project);

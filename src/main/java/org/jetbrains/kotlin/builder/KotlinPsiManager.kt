@@ -49,7 +49,7 @@ object KotlinPsiManager {
             ?.toSet() ?: emptySet()
     
     private fun parseFile(file: FileObject): KtFile? =
-            parseText(StringUtilRt.convertLineSeparators(file.asText()), file)
+            parseText(StringUtilRt.convertLineSeparators(file.asText("UTF-8")), file)
     
     fun parseText(text: String, file: FileObject): KtFile? {
         StringUtil.assertValidSeparators(text)
@@ -95,7 +95,7 @@ object KotlinPsiManager {
 
     private fun updatePsiFile(file: FileObject) {
         try {
-            val code = file.asText()
+            val code = file.asText("UTF-8")
             val sourceCodeWithoutCR = StringUtilRt.convertLineSeparators(code)
             val currentParsedFile = cachedKtFiles[file] ?: return
             if (currentParsedFile.text != sourceCodeWithoutCR) {

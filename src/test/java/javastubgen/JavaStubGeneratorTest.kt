@@ -37,10 +37,10 @@ class JavaStubGeneratorTest : KotlinTestCase("Stub generator test", "stubGen") {
         val kotlinFile = dir.getFileObject("$fileName.kt")
         val list = JavaStubGenerator.gen(getByteCode(kotlinFile))
         if (after.isEmpty()) {
-            val expected = dir.getFileObject("$fileName.after").asText()
+            val expected = dir.getFileObject("$fileName.after").asText("UTF-8")
             assertTrue(list.first().second equalsWithoutSpaces expected)
         } else after.forEachIndexed { i, _ ->
-            val expected = dir.getFileObject("${after[i]}.after").asText()
+            val expected = dir.getFileObject("${after[i]}.after").asText("UTF-8")
             assertTrue(list[i].second equalsWithoutSpaces expected)
         }
     }
