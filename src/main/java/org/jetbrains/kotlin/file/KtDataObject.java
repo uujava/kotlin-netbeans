@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Kt_LOADER",
         mimeType = "text/x-kt",
-        extension = {"kt", "KT"}
+        extension = {"kt", "KT", "kts", "KTS"}
 )
 @DataObject.Registration(
         mimeType = "text/x-kt",

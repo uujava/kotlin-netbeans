@@ -120,9 +120,7 @@ import org.jetbrains.kotlin.resolve.jvm.modules.JavaModuleResolver
 import org.jetbrains.kotlin.resolve.lang.kotlin.NetBeansVirtualFileFinderFactory
 import org.jetbrains.kotlin.resolve.lazy.declarations.CliDeclarationProviderFactoryService
 import org.jetbrains.kotlin.resolve.lazy.declarations.DeclarationProviderFactoryService
-import org.jetbrains.kotlin.script.KotlinScriptDefinitionProvider
-import org.jetbrains.kotlin.script.ScriptDependenciesProvider
-import org.jetbrains.kotlin.script.ScriptReportSink
+import org.jetbrains.kotlin.script.*
 import org.jetbrains.kotlin.utils.KotlinImportInserterHelper
 import org.jetbrains.kotlin.utils.ProjectUtils
 import java.io.File
@@ -233,6 +231,7 @@ class KotlinEnvironment private constructor(kotlinProject: NBProject, disposable
 
         }
         configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
+        configuration.add(JVMConfigurationKeys.SCRIPT_DEFINITIONS, StandardScriptDefinition)
         registerProjectServices(projectEnvironment, kotlinProject, messageCollector)
 
         sourceFiles += CompileEnvironmentUtil.getKtFiles(project, getSourceRootsCheckingForDuplicates(), this.configuration, { message ->
@@ -457,6 +456,7 @@ class KotlinEnvironment private constructor(kotlinProject: NBProject, disposable
             //
             CoreApplicationEnvironment.registerExtensionPoint(Extensions.getRootArea(), TypeAnnotationModifier.EP_NAME, TypeAnnotationModifier::class.java)
             CoreApplicationEnvironment.registerExtensionPoint(Extensions.getRootArea(), MetaLanguage.EP_NAME, MetaLanguage::class.java)
+            CoreApplicationEnvironment.registerExtensionPoint(Extensions.getRootArea(), "org.jetbrains.kotlin.scriptHelper", ScriptHelperImpl::class.java)
         }
 
 
@@ -533,7 +533,7 @@ class KotlinEnvironment private constructor(kotlinProject: NBProject, disposable
                 getExtensionPoint(CodeStyleSettingsProvider.EXTENSION_POINT_NAME).registerExtension(KotlinSettingsProvider())
                 getExtensionPoint(LanguageCodeStyleSettingsProvider.EP_NAME).registerExtension(KotlinLanguageCodeStyleSettingsProvider())
                 getExtensionPoint(DefaultErrorMessages.Extension.EP_NAME).registerExtension(DefaultErrorMessagesJvm())
-                getExtensionPoint(DefaultErrorMessages.Extension.EP_NAME).registerExtension(DefaultErrorMessagesJs())
+                getExtensionPoint<ScriptHelper>("org.jetbrains.kotlin.scriptHelper").registerExtension(ScriptHelperImpl())
             }
         }
 

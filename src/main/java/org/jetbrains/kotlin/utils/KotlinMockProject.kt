@@ -16,22 +16,24 @@
  *******************************************************************************/
 package org.jetbrains.kotlin.utils
 
-import java.io.IOException
+import org.jetbrains.kotlin.log.KotlinLogger
 import org.netbeans.api.project.Project
 import org.netbeans.api.project.ProjectManager
 import org.netbeans.spi.project.support.ant.AntProjectHelper
 import org.netbeans.spi.project.support.ant.ProjectGenerator
 import org.openide.filesystems.FileUtil
 import org.openide.modules.Places
+import java.io.IOException
 
 object KotlinMockProject {
-    
+
     private var project: Project? = null
-    
+    private val userDirectory by lazy { FileUtil.toFileObject(Places.getUserDirectory()) }
+
     private fun createHelper(): AntProjectHelper? {
-        val userDirectory = FileUtil.toFileObject(Places.getUserDirectory())
+
         val projectName = "ktFilesWithoutProject"
-        
+
         if (userDirectory.getFileObject(projectName) == null) {
             try {
                 userDirectory.createFolder(projectName)
@@ -44,12 +46,16 @@ object KotlinMockProject {
 
     fun getMockProject(): Project? {
         if (project == null) {
-            try {
-                val helper = createHelper() ?: return null
-                project = ProjectManager.getDefault().findProject(helper.projectDirectory)
-            } catch (ex: IOException) {}
+            project = ProjectManager.getDefault().findProject(userDirectory)
+            if (project == null) {
+                try {
+                    val helper = createHelper() ?: return null
+                    project = ProjectManager.getDefault().findProject(helper.projectDirectory)
+                } catch (ex: IOException) {
+                    KotlinLogger.INSTANCE.logWarning("unable to setup mock project: " + project)
+                }
+            }
         }
-        
         return project
     }
 
