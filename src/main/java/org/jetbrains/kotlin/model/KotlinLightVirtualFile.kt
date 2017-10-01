@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.openide.filesystems.FileObject
 
 class KotlinLightVirtualFile(val fo: FileObject, text: String) : 
-        LightVirtualFile(fo.name, KotlinLanguage.INSTANCE, text) {
+        LightVirtualFile(fo.nameExt, KotlinLanguage.INSTANCE, text) {
     
     override fun getPath(): String = fo.path
     

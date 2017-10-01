@@ -20,7 +20,10 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.util.text.StringUtilRt
 import com.intellij.openapi.vfs.CharsetToolkit
 import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.PsiFileFactoryImpl
+import com.intellij.testFramework.LightVirtualFile
+import org.jetbrains.kotlin.extensions.PreprocessedFileCreator
 import java.io.IOException
 import org.jetbrains.kotlin.projectsextensions.KotlinProjectHelper.checkProject
 import org.jetbrains.kotlin.projectsextensions.KotlinProjectHelper.getKotlinSources
@@ -60,10 +63,12 @@ object KotlinPsiManager {
         }
         
         val project = KotlinEnvironment.getEnvironment(kotlinProject).project
-        val virtualFile = KotlinLightVirtualFile(file, text)
-        virtualFile.charset = CharsetToolkit.UTF8_CHARSET
+        val originalVirtualFile = KotlinLightVirtualFile(file, text)
+        originalVirtualFile.charset = CharsetToolkit.UTF8_CHARSET
+
+        val virtualFile = PreprocessedFileCreator(project).create(originalVirtualFile) as LightVirtualFile
+
         val psiFileFactory = PsiFileFactory.getInstance(project) as PsiFileFactoryImpl
-        
         return psiFileFactory.trySetupPsiForFile(virtualFile, KotlinLanguage.INSTANCE, true, false) as KtFile
     }
 

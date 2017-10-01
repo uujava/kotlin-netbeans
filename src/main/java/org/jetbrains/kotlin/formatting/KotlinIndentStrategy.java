@@ -135,7 +135,7 @@ public class KotlinIndentStrategy {
             return "";
         }
         KtPsiFactory psiFactory = KotlinFormatterUtils.createPsiFactory(project);
-        KtFile ktFile = KotlinFormatterUtils.createKtFile(text, psiFactory, file.getName());
+        KtFile ktFile = KotlinFormatterUtils.createKtFile(text, psiFactory, file.getNameExt());
 
         CodeStyleSettings settings = KotlinFormatterUtils.getSettings();
         KotlinBlock rootBlock = new KotlinBlock(ktFile.getNode(),
